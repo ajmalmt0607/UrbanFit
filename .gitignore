@@ -1,0 +1,119 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+**/__pycache__/
+_pycache_/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+build/
+dist/
+
+# =========================
+# Virtual Environment
+# =========================
+venv/
+env/
+.venv/
+
+# =========================
+# Django
+# =========================
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+celerybeat-schedule*
+*.pot
+
+# Ignore local test file if company follows this
+test.py
+
+# =========================
+# Environment files
+# Never push env files
+# =========================
+.env
+.env.*
+*.env
+.env.development
+.env.production
+.env.local
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.vscode/launch.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =========================
+# Testing / Coverage
+# =========================
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.cache/
+
+# =========================
+# Docker generated data / local docker files
+# =========================
+postgres-data/
+docker-data/
+
+# Company rule: ignore local Docker files
+Dockerfile
+docker-compose.yaml
+docker-compose.yml
+
+# =========================
+# Elastic Beanstalk
+# =========================
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+.ebextensions/*
+
+# =========================
+# Config / local machine files
+# =========================
+*.ini
+
+# =========================
+# Migrations
+# Company rule: do not push migrations
+# Keep migrations folder package file only
+# =========================
+**/migrations/*
+!**/migrations/
+!**/migrations/__init__.py
+
+/migrations/*
+!/migrations/
+!/migrations/__init__.py
+
+# =========================
+# Project-specific ignored files
+# =========================
+README.md
