@@ -83,9 +83,9 @@ postgres-data/
 docker-data/
 
 # Company rule: ignore local Docker files
-Dockerfile
-docker-compose.yaml
-docker-compose.yml
+# Dockerfile
+# docker-compose.yaml
+# docker-compose.yml
 
 # =========================
 # Elastic Beanstalk
@@ -116,4 +116,4 @@ docker-compose.yml
 # =========================
 # Project-specific ignored files
 # =========================
-README.md
+# README.md
