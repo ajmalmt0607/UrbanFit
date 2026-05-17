@@ -1,3 +1,5 @@
+from django.core.mail import send_mail
+from django.conf import settings
 import random
 
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -8,17 +10,29 @@ def generate_otp():
 
 
 def send_otp_email(email, otp, purpose):
-    """
-    Temporary development email sender.
+    subject_map = {
+        "SIGNUP": "Verify your UrbanFit account",
+        "FORGOT_PASSWORD": "Reset your UrbanFit password",
+    }
 
-    For now, we print OTP in terminal.
-    Later, we will replace this with real email sending.
-    """
-    print("=" * 60)
-    print(f"OTP Purpose: {purpose}")
-    print(f"Email: {email}")
-    print(f"OTP: {otp}")
-    print("=" * 60)
+    subject = subject_map.get(purpose, "Your UrbanFit verification code")
+
+    message = (
+        f"Hello,\n\n"
+        f"Your UrbanFit verification code is: {otp}\n\n"
+        f"This code will expire in 10 minutes.\n\n"
+        f"If you did not request this code, please ignore this email.\n\n"
+        f"Regards,\n"
+        f"UrbanFit Team"
+    )
+
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[email],
+        fail_silently=False,
+    )
 
 
 def get_tokens_for_user(user):
