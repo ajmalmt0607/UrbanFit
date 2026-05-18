@@ -3,7 +3,8 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from apps.accounts.models import EmailOTP, TempUser, User
-from api.v1.accounts.utils import generate_otp, send_otp_email
+from api.v1.accounts.utils import generate_otp
+from apps.accounts.tasks import send_otp_email_task
 
 
 class SignupSerializer(serializers.Serializer):
@@ -59,7 +60,7 @@ class SignupSerializer(serializers.Serializer):
             expires_at=EmailOTP.default_expiry(),
         )
 
-        send_otp_email(
+        send_otp_email_task.delay(
             email=email,
             otp=otp,
             purpose=EmailOTP.Purpose.SIGNUP,

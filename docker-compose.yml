@@ -12,6 +12,7 @@ services:
       - .env
     depends_on:
       - db
+      - redis
     command: python manage.py runserver 0.0.0.0:8000
 
   db:
@@ -23,6 +24,27 @@ services:
       - urbanfit_db:/var/lib/postgresql/data/
     env_file:
       - .env
+
+  redis:
+    image: redis:7-alpine
+    container_name: urbanfit_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  celery:
+    container_name: urbanfit_celery
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/urbanfit
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    command: celery -A config worker --loglevel=info
 
 volumes:
   urbanfit_db:

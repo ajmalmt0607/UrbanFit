@@ -6,6 +6,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+import resend
 
 
 # Build paths inside the project
@@ -186,24 +187,31 @@ STORAGES = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Email settings
-EMAIL_BACKEND = env(
-    "EMAIL_BACKEND",
-    default="django.core.mail.backends.smtp.EmailBackend",
+# Resend email settings
+RESEND_API_KEY = env("RESEND_API_KEY", default="")
+resend.api_key = RESEND_API_KEY
+
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL",
+    default="UrbanFit <onboarding@resend.dev>",
 )
 
-EMAIL_HOST = env("EMAIL_HOST", default="smtp.gmail.com")
-EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
-EMAIL_TIMEOUT = env.int("EMAIL_TIMEOUT", default=15)
+# Celery settings
+CELERY_BROKER_URL = env(
+    "CELERY_BROKER_URL",
+    default="redis://redis:6379/0",
+)
+CELERY_RESULT_BACKEND = env(
+    "CELERY_RESULT_BACKEND",
+    default="redis://redis:6379/1",
+)
 
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
-
-DEFAULT_BCC_EMAIL = env.list("DEFAULT_BCC_EMAIL", default=[])
-DEFAULT_REPLY_TO_EMAIL = env.list("DEFAULT_REPLY_TO_EMAIL", default=[])
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_IGNORE_RESULT = env.bool("CELERY_TASK_IGNORE_RESULT", default=True)
+CELERY_TASK_TRACK_STARTED = True
 
 
 # Default primary key field type

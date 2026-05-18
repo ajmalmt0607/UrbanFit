@@ -1,5 +1,6 @@
 services:
   backend:
+    image: urbanfit-backend-prod
     container_name: urbanfit_backend_prod
     build:
       context: .
@@ -11,6 +12,7 @@ services:
       - .env
     depends_on:
       - db
+      - redis
     command: >
       sh -c "gunicorn --bind 0.0.0.0:8000 --workers 2 --timeout 120 config.wsgi:application"
     networks:
@@ -27,8 +29,32 @@ services:
     networks:
       - urbanfit_network
 
+  redis:
+    image: redis:7-alpine
+    container_name: urbanfit_redis_prod
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - urbanfit_redis_data:/data
+    networks:
+      - urbanfit_network
+
+  celery:
+    image: urbanfit-backend-prod
+    container_name: urbanfit_celery_prod
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    command: celery -A config worker --loglevel=info
+    networks:
+      - urbanfit_network
+
 volumes:
   urbanfit_postgres_data:
+  urbanfit_redis_data:
 
 networks:
   urbanfit_network:
