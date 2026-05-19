@@ -194,7 +194,7 @@ resend.api_key = RESEND_API_KEY
 DEFAULT_FROM_EMAIL = env(
     "DEFAULT_FROM_EMAIL",
     default="UrbanFit <onboarding@resend.dev>",
-) 
+)
 
 # Celery settings
 CELERY_BROKER_URL = env(
