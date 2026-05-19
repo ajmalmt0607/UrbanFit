@@ -187,7 +187,7 @@ STORAGES = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Resend email settings
+# Resend Email settings
 RESEND_API_KEY = env("RESEND_API_KEY", default="")
 resend.api_key = RESEND_API_KEY
 
