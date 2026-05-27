@@ -1,5 +1,7 @@
 from django.utils import timezone
 from django.db import transaction
+from django.utils.text import slugify
+import uuid
 
 
 def get_auto_id(model):
@@ -42,3 +44,12 @@ def basedata(instance, request):
     instance.updater = username
 
     instance.updated_at = timezone.now()
+
+
+def generate_slug(title):
+
+    slug = slugify(title)
+
+    unique_suffix = uuid.uuid4().hex[:7]
+
+    return f"{slug}-{unique_suffix}"
