@@ -3,6 +3,8 @@ import uuid
 from django.db import models
 
 from apps.common.managers import ActiveManager, DeletedManager
+from apps.common.middleware import get_current_request
+from apps.common.functions import basedata
 
 
 class BaseModel(models.Model):
@@ -62,13 +64,10 @@ class BaseModel(models.Model):
         self.save(update_fields=["is_deleted"])
 
     def save(self, *args, **kwargs):
-        if not self.auto_id:
-            last_auto_id = (
-                self.__class__.objects.aggregate(
-                    models.Max("auto_id")
-                )["auto_id__max"]
-            )
 
-            self.auto_id = 1 if last_auto_id is None else last_auto_id + 1
+        request = get_current_request()
+
+        if request:
+            basedata(self, request)
 
         super().save(*args, **kwargs)
